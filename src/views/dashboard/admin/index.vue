@@ -1,60 +1,63 @@
 <template>
   <div class="dashboard-editor-container">
-    <github-corner class="github-corner" />
 
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span class="title">机器状态分布</span>
+        <div style="float: right">
+          <el-button-group>
+            <el-button type="primary" size="mini">昨天</el-button>
+            <el-button type="primary" size="mini">今天</el-button>
+            <el-button type="primary" size="mini">最近7天</el-button>
+            <el-button type="primary" size="mini">最近30天</el-button>
+            <el-button type="primary" size="mini">自定义</el-button>
+          </el-button-group>
+        </div>
+      </div>
       <line-chart :chart-data="lineChartData" />
-    </el-row>
-
+    </el-card>
     <el-row :gutter="32">
       <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <raddar-chart />
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <pie-chart />
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
+        <el-card class="box-card chart-wrapper">
+          <div slot="header" class="clearfix">
+            <span class="title">最大值状态分布</span>
+          </div>
           <bar-chart />
-        </div>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="8">
+        <el-card class="box-card chart-wrapper">
+          <div slot="header" class="clearfix">
+            <span class="title">最小值状态分布</span>
+          </div>
+          <bar-chart />
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="8">
+        <el-card class="box-card chart-wrapper">
+          <div slot="header" class="clearfix">
+            <span class="title">平均值状态分布</span>
+          </div>
+          <bar-chart />
+        </el-card>
       </el-col>
     </el-row>
 
-    <el-row :gutter="8">
-      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 12}" :xl="{span: 12}" style="padding-right:8px;margin-bottom:30px;">
-        <transaction-table />
-      </el-col>
-      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">
-        <todo-list />
-      </el-col>
-      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">
-        <box-card />
-      </el-col>
-    </el-row>
   </div>
 </template>
 
 <script>
-import GithubCorner from '@/components/GithubCorner'
 import PanelGroup from './components/PanelGroup'
 import LineChart from './components/LineChart'
-import RaddarChart from './components/RaddarChart'
-import PieChart from './components/PieChart'
 import BarChart from './components/BarChart'
-import TransactionTable from './components/TransactionTable'
-import TodoList from './components/TodoList'
-import BoxCard from './components/BoxCard'
 
 const lineChartData = {
   newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145]
+    cpuData: [100, 120, 161, 134, 105, 160, 165],
+    memData: [120, 82, 91, 154, 162, 140, 145],
+    diskData: [201, 95, 132, 98, 43, 120, 185]
   },
   messages: {
     expectedData: [200, 192, 120, 144, 160, 130, 140],
@@ -73,15 +76,9 @@ const lineChartData = {
 export default {
   name: 'DashboardAdmin',
   components: {
-    GithubCorner,
     PanelGroup,
     LineChart,
-    RaddarChart,
-    PieChart,
-    BarChart,
-    TransactionTable,
-    TodoList,
-    BoxCard
+    BarChart
   },
   data() {
     return {
@@ -95,8 +92,33 @@ export default {
   }
 }
 </script>
-
+<style>
+  .el-card__header{
+    padding: 0 0 10px !important;
+  }
+</style>
 <style lang="scss" scoped>
+.box-card {
+  box-shadow: none;
+  border-radius: 0px;
+  border: none;
+  background:#fff;
+  padding:16px 16px 0;
+  margin-bottom:32px;
+  .title {
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.45);
+    line-height: 28px;
+  }
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both
+}
 .dashboard-editor-container {
   padding: 32px;
   background-color: rgb(240, 242, 245);

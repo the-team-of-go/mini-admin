@@ -61,8 +61,20 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons')
       this.setOptions(this.chartData)
     },
-    setOptions({ expectedData, actualData } = {}) {
+    setOptions({ cpuData, memData, diskData } = {}) {
       this.chart.setOption({
+        title: {
+          text: 'Distribution of Machine Info'
+        },
+        toolbox: {
+          feature: {
+            dataZoom: {
+              yAxisIndex: 'none'
+            },
+            restore: {},
+            saveAsImage: {}
+          }
+        },
         xAxis: {
           data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
           boundaryGap: false,
@@ -74,7 +86,7 @@ export default {
           left: 10,
           right: 10,
           bottom: 20,
-          top: 30,
+          top: 50,
           containLabel: true
         },
         tooltip: {
@@ -90,10 +102,10 @@ export default {
           }
         },
         legend: {
-          data: ['expected', 'actual']
+          data: ['cpu', 'mem', 'disk']
         },
         series: [{
-          name: 'expected', itemStyle: {
+          name: 'cpu', itemStyle: {
             normal: {
               color: '#FF005A',
               lineStyle: {
@@ -104,12 +116,12 @@ export default {
           },
           smooth: true,
           type: 'line',
-          data: expectedData,
+          data: cpuData,
           animationDuration: 2800,
           animationEasing: 'cubicInOut'
         },
         {
-          name: 'actual',
+          name: 'mem',
           smooth: true,
           type: 'line',
           itemStyle: {
@@ -124,7 +136,27 @@ export default {
               }
             }
           },
-          data: actualData,
+          data: memData,
+          animationDuration: 2800,
+          animationEasing: 'quadraticOut'
+        },
+        {
+          name: 'disk',
+          smooth: true,
+          type: 'line',
+          itemStyle: {
+            normal: {
+              color: '#40c9c6',
+              lineStyle: {
+                color: '#40c9c6',
+                width: 2
+              },
+              areaStyle: {
+                color: '#f3f8ff'
+              }
+            }
+          },
+          data: diskData,
           animationDuration: 2800,
           animationEasing: 'quadraticOut'
         }]
