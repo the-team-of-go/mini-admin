@@ -40,6 +40,7 @@ export default {
     chartData: {
       deep: true,
       handler(val) {
+        console.log('watch', val)
         this.setOptions(val)
       }
     }
@@ -76,7 +77,7 @@ export default {
           }
         },
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: [1, 2, 3],
           boundaryGap: false,
           axisTick: {
             show: false

@@ -33,7 +33,12 @@ import ThemePicker from '@/components/ThemePicker'
 export default {
   components: { ThemePicker },
   data() {
-    return {}
+    return {
+      listQuery: {
+        sort: '+id'
+      },
+      sortOptions: [{ label: '胜多负少', key: '+id' }, { label: 'ID Descending', key: '-id' }]
+    }
   },
   computed: {
     fixedHeader: {
