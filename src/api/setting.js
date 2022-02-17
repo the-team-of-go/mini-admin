@@ -30,3 +30,18 @@ export function updateAdmin(data) {
     data: data
   })
 }
+
+export function updateSetting(data) {
+  return request({
+    url: '/v1/config',
+    method: 'put',
+    data: data
+  })
+}
+
+export function fetchSetting() {
+  return request({
+    url: '/v1/config',
+    method: 'get'
+  })
+}

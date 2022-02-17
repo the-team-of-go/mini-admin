@@ -105,6 +105,15 @@ export const asyncRoutes = [
           title: '管理员配置',
           roles: ['admin']
         }
+      },
+      {
+        path: 'config',
+        component: () => import('@/views/permission/config'),
+        name: 'ConfigPermission',
+        meta: {
+          title: '预警配置',
+          roles: ['admin']
+        }
       }
     ]
   },

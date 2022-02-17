@@ -48,7 +48,6 @@
           <div class="card-panel-text">
             Status
           </div>
-          <!--          <count-to :start-val="0" :end-val="13600" :duration="3600" class="card-panel-num" />-->
           <div class="card-panel-num">{{ machineStatus.Status }}</div>
         </div>
       </div>
@@ -68,6 +67,8 @@ export default {
       type: Object,
       required: true
     }
+  },
+  computed: {
   },
   methods: {
   }
