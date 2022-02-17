@@ -22,13 +22,6 @@
             <el-radio-button label="最近7天" />
             <el-radio-button label="最近30天" />
           </el-radio-group>
-          <!--          <el-button-group>-->
-          <!--            <el-button type="primary" size="mini">昨天</el-button>-->
-          <!--            <el-button type="primary" size="mini">今天</el-button>-->
-          <!--            <el-button type="primary" size="mini">最近7天</el-button>-->
-          <!--            <el-button type="primary" size="mini">最近30天</el-button>-->
-          <!--            <el-button type="primary" size="mini">自定义</el-button>-->
-          <!--          </el-button-group>-->
         </div>
       </div>
       <line-chart :chart-data="lineChartData" />
@@ -39,7 +32,7 @@
           <div slot="header" class="clearfix">
             <span class="title">最大值状态分布</span>
           </div>
-          <bar-chart />
+          <mini-line-chart :chart-data="maxChartData" />
         </el-card>
       </el-col>
       <el-col :xs="24" :sm="24" :lg="8">
@@ -47,7 +40,7 @@
           <div slot="header" class="clearfix">
             <span class="title">最小值状态分布</span>
           </div>
-          <bar-chart />
+          <mini-line-chart :chart-data="minChartData" />
         </el-card>
       </el-col>
       <el-col :xs="24" :sm="24" :lg="8">
@@ -55,7 +48,7 @@
           <div slot="header" class="clearfix">
             <span class="title">平均值状态分布</span>
           </div>
-          <bar-chart />
+          <mini-line-chart :chart-data="avgChartData" />
         </el-card>
       </el-col>
     </el-row>
@@ -66,20 +59,24 @@
 <script>
 import PanelGroup from './components/PanelGroup'
 import LineChart from './components/LineChart'
-import BarChart from './components/BarChart'
 import { fetchMachineInfoList, fetchMachineList, fetchMachineStatus } from '@/api/machine'
+import MiniLineChart from '@/views/dashboard/admin/components/MiniLineChart'
+import date from '@/utils/date'
 
 export default {
   name: 'DashboardAdmin',
   components: {
+    MiniLineChart,
     PanelGroup,
-    LineChart,
-    BarChart
+    LineChart
   },
   data() {
     return {
       timeRange: '今天',
       lineChartData: {},
+      maxChartData: {},
+      minChartData: {},
+      avgChartData: {},
       machine: null,
       machineOptions: [1, 2, 3, 4, 5],
       // 当前状态
@@ -152,12 +149,19 @@ export default {
       const query = {
         id: this.machine,
         start: this.start,
-        end: this.end,
-        type: 'basic'
+        end: this.end
       }
-      fetchMachineInfoList(query).then(res => {
+      fetchMachineInfoList(query, 'basic').then(res => {
         this.lineChartData = this.parseChartData(res.data)
-        console.log(this.lineChartData)
+      })
+      fetchMachineInfoList(query, 'max').then(res => {
+        this.maxChartData = this.parseChartData(res.data)
+      })
+      fetchMachineInfoList(query, 'min').then(res => {
+        this.minChartData = this.parseChartData(res.data)
+      })
+      fetchMachineInfoList(query, 'avg').then(res => {
+        this.avgChartData = this.parseChartData(res.data)
       })
     },
     parseChartData(rawData) {
@@ -170,13 +174,14 @@ export default {
       if (!rawData) {
         return chartData
       }
-
-      let i = 0
       for (const data of rawData) {
         chartData.cpuData.push(data.cpu)
         chartData.memData.push(data.mem)
         chartData.diskData.push(data.disk)
-        chartData.xaxis.push(i++)
+
+        const time = date('Y-m-d H:i:s', data.timeout / 1000)
+        console.log(time)
+        chartData.xaxis.push(time)
       }
       return chartData
     }
@@ -184,8 +189,11 @@ export default {
 }
 </script>
 <style>
-  .el-card__header{
+  .box-card .el-card__header{
     padding: 0 0 10px !important;
+  }
+  .box-card .el-card__body {
+    padding: 20px 0;
   }
 </style>
 <style lang="scss" scoped>

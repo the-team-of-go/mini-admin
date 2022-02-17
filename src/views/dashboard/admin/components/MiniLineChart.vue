@@ -63,33 +63,13 @@ export default {
       this.setOptions(this.chartData)
     },
     setOptions({ cpuData, memData, diskData, xaxis } = {}) {
-      console.log('xaxis', xaxis)
       this.chart.setOption({
-        title: {
-          text: 'Distribution of Machine Info'
-        },
-        toolbox: {
-          feature: {
-            dataZoom: {
-              yAxisIndex: 'none'
-            },
-            restore: {},
-            saveAsImage: {}
-          }
-        },
         xAxis: {
           data: xaxis,
           boundaryGap: false,
           axisTick: {
             show: false
           }
-        },
-        grid: {
-          left: 10,
-          right: 10,
-          bottom: 20,
-          top: 50,
-          containLabel: true
         },
         tooltip: {
           trigger: 'axis',
@@ -98,13 +78,17 @@ export default {
           },
           padding: [5, 10]
         },
+        grid: {
+          left: 5,
+          right: 5,
+          bottom: 10,
+          top: 10,
+          containLabel: true
+        },
         yAxis: {
           axisTick: {
             show: false
           }
-        },
-        legend: {
-          data: ['cpu', 'mem', 'disk']
         },
         series: [{
           name: 'cpu', itemStyle: {
@@ -116,15 +100,15 @@ export default {
               }
             }
           },
-          smooth: true,
+          smooth: false,
           type: 'line',
           data: cpuData,
-          animationDuration: 2800,
+          animationDuration: 1000,
           animationEasing: 'cubicInOut'
         },
         {
           name: 'mem',
-          smooth: true,
+          smooth: false,
           type: 'line',
           itemStyle: {
             normal: {
@@ -139,12 +123,12 @@ export default {
             }
           },
           data: memData,
-          animationDuration: 2800,
+          animationDuration: 1000,
           animationEasing: 'quadraticOut'
         },
         {
           name: 'disk',
-          smooth: true,
+          smooth: false,
           type: 'line',
           itemStyle: {
             normal: {
@@ -159,7 +143,7 @@ export default {
             }
           },
           data: diskData,
-          animationDuration: 2800,
+          animationDuration: 1000,
           animationEasing: 'quadraticOut'
         }]
       }, true)

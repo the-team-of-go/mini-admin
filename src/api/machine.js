@@ -1,4 +1,4 @@
-import request from '@/utils/remote-request'
+import request from '@/utils/remote_request'
 
 export function fetchMachineList() {
   return request({
@@ -15,10 +15,15 @@ export function fetchMachineStatus(id) {
   })
 }
 
-export function fetchMachineInfoList(query) {
+export function fetchMachineInfoList(query, type) {
   return request({
     url: '/machine/info/list',
     method: 'get',
-    params: query
+    params: {
+      id: query.id,
+      start: query.start,
+      end: query.end,
+      type: type
+    }
   })
 }
