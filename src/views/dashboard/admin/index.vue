@@ -4,7 +4,7 @@
     <el-row :gutter="32">
       <el-col :xs="24" :sm="24" :lg="24">
         <span style="color: rgba(0, 0, 0, 0.45); margin-right: 10px">Machine</span>
-        <el-select v-model="machine" clearable style="width: 140px" placeholder="设备ID" class="filter-item" @change="handleMachineChange">
+        <el-select v-model="machine" style="width: 140px" placeholder="设备ID" class="filter-item" @change="handleMachineChange">
           <el-option v-for="item in machineOptions" :key="item" :label="item" :value="item" />
         </el-select>
       </el-col>
@@ -98,6 +98,7 @@ export default {
       }
       this.machine = this.machineOptions[0]
       this.updateMachineData()
+      this.keepQryMachineInfo()
     })
   },
   methods: {
@@ -105,6 +106,11 @@ export default {
       await fetchMachineList().then(res => {
         this.machineOptions = res.data
       })
+    },
+    keepQryMachineInfo() {
+      setInterval(() => {
+        this.updateMachineData()
+      }, 10000)
     },
     handleMachineChange() {
       this.updateMachineData()
@@ -175,9 +181,9 @@ export default {
         return chartData
       }
       for (const data of rawData) {
-        chartData.cpuData.push(data.cpu)
-        chartData.memData.push(data.mem)
-        chartData.diskData.push(data.disk)
+        chartData.cpuData.push(data.cpu.toFixed(2))
+        chartData.memData.push(data.mem.toFixed(2))
+        chartData.diskData.push(data.disk.toFixed(2))
 
         const time = date('Y-m-d H:i:s', data.timeout / 1000)
         console.log(time)
